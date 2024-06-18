@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Görev Yönetim Paneli</h1>
+    <a href="{{ url_for('logout') }}">Çıkış Yap</a>
+
+    <h2>Görevler</h2>
+    <ul>
+    {% for task in tasks %}
+        <li>
+            <strong>{{ task.title }}</strong> - {{ task.description }} <br>
+            Veriliş Tarihi: {{ task.created_at }} <br>
+            Süre: {{ task.duration }} gün <br>
+            Bitiş Tarihi: {{ task.due_date }} <br>
+            {% if not task.completed %}
+                <form action="{{ url_for('complete_task', task_id=task.id) }}" method="POST" style="display: inline;">
+                    <button type="submit">Tamamla</button>
+                </form>
+                <span class="not-completed">Tamamlanmadı</span>
+            {% else %}
+                Tamamlanma Tarihi: {{ task.completion_date }} <br>
+                <span class="completed">Tamamlandı</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

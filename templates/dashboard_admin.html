@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Yönetici</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Görev Yönetim Paneli - Yönetici</h1>
+    <a href="{{ url_for('logout') }}">Çıkış Yap</a>
+
+    <h2>Yeni Görev Ata</h2>
+    <ul>
+    {% for user in users %}
+        <li>
+            {{ user.username }} - <a href="{{ url_for('assign_task', user_id=user.id) }}">Görev Ata</a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h2>Görevler</h2>
+    <ul>
+    {% for task in tasks %}
+        <li class="task-card">
+            <h3>{{ task.title }}</h3>
+            <p>{{ task.description }}</p>
+            <table>
+                <tr>
+                    <td>Veriliş Tarihi:</td>
+                    <td>{{ task.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                <tr>
+                    <td>Süre:</td>
+                    <td>{{ task.duration }} gün</td>
+                </tr>
+                <tr>
+                    <td>Bitiş Tarihi:</td>
+                    <td>{{ task.due_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                <tr>
+                    <td  >Görevlendirilen:</td>
+                    <td>{{ task.assigned_user.username }}</td>
+                </tr>
+                {% if not task.completed %}
+                <tr>
+                    <td>Durum:</td>
+                    <td><span class="not-completed">Tamamlanmadı</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href="{{ url_for('reassign_task', task_id=task.id) }}">Yeniden Ata</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td>Tamamlanma Tarihi:</td>
+                    <td>{{ task.completion_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                </tr>
+                <tr>
+                    <td>Durum:</td>
+                    <td><span class="completed">Tamamlandı</span></td>
+                </tr>
+                {% endif %}
+            </table>
+            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display: inline;">
+                <button type="submit">Sil</button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

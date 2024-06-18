@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görev Ata</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Görev Ata</h1>
+    <form action="{{ url_for('assign_task', user_id=user.id) }}" method="POST">
+        <label for="title">Görev Başlığı:</label>
+        <input type="text" name="title" required>
+        <label for="description">Görev Açıklaması:</label>
+        <input type="text" name="description" required>
+        <label for="duration">Süre (gün):</label>
+        <input type="number" name="duration" required>
+        <button type="submit">Görev Ata</button>
+    </form>
+</body>
+</html>
